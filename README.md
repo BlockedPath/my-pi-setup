@@ -8,18 +8,23 @@ Clone this repo, run the OS prereqs script, then `./install.sh`.
 
 ## New machine
 
+This repo is **private**. On a new Ubuntu box you will not have this machine's SSH keys. Use GitHub CLI, or copy the folder with `scp`/USB.
+
 ```bash
-git clone git@github.com:BlockedPath/my-pi-setup.git
+# Ubuntu: git + gh first, then clone
+sudo apt update && sudo apt install -y git gh
+gh auth login
+gh repo clone BlockedPath/my-pi-setup
 cd my-pi-setup
 chmod +x prereqs.sh install.sh
 ./prereqs.sh --install    # Ubuntu, Debian, WSL, macOS, Git Bash
 ./install.sh              # Pi packages, skills, extensions, themes
 ```
 
-On native Windows (no Git Bash yet), from PowerShell:
+On native Windows (no Git Bash yet), from PowerShell (after `gh auth login` or an HTTPS credential):
 
 ```powershell
-git clone https://github.com/BlockedPath/my-pi-setup.git
+gh repo clone BlockedPath/my-pi-setup
 cd my-pi-setup
 powershell -ExecutionPolicy Bypass -File .\prereqs.ps1 -Install
 ```

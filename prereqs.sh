@@ -28,16 +28,31 @@ EOF
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --check) INSTALL=0; shift ;;
-    --install) INSTALL=1; shift ;;
-    --yes|-y) YES=1; shift ;;
-    --optional) OPTIONAL=1; shift ;;
-    -h|--help) usage; exit 0 ;;
-    *)
-      echo "error: unknown option: $1" >&2
-      usage >&2
-      exit 1
-      ;;
+  --check)
+    INSTALL=0
+    shift
+    ;;
+  --install)
+    INSTALL=1
+    shift
+    ;;
+  --yes | -y)
+    YES=1
+    shift
+    ;;
+  --optional)
+    OPTIONAL=1
+    shift
+    ;;
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  *)
+    echo "error: unknown option: $1" >&2
+    usage >&2
+    exit 1
+    ;;
   esac
 done
 
@@ -45,17 +60,17 @@ OS="unknown"
 WSL=0
 uname_s="$(uname -s 2>/dev/null || echo unknown)"
 case "$uname_s" in
-  Darwin) OS="macos" ;;
-  Linux)
-    if grep -qi microsoft /proc/version 2>/dev/null; then WSL=1; fi
-    if command -v apt-get >/dev/null 2>&1; then
-      OS="debian"
-    else
-      OS="linux"
-    fi
-    ;;
-  MINGW*|MSYS*|CYGWIN*) OS="windows" ;;
-  *) OS="unknown" ;;
+Darwin) OS="macos" ;;
+Linux)
+  if grep -qi microsoft /proc/version 2>/dev/null; then WSL=1; fi
+  if command -v apt-get >/dev/null 2>&1; then
+    OS="debian"
+  else
+    OS="linux"
+  fi
+  ;;
+MINGW* | MSYS* | CYGWIN*) OS="windows" ;;
+*) OS="unknown" ;;
 esac
 
 ok() { printf '  [ok]  %s\n' "$*"; }
@@ -80,8 +95,8 @@ version_ge() {
     bi="${bi%%[^0-9]*}"
     ai="${ai:-0}"
     bi="${bi:-0}"
-    if (( ai > bi )); then return 0; fi
-    if (( ai < bi )); then return 1; fi
+    if ((ai > bi)); then return 0; fi
+    if ((ai < bi)); then return 1; fi
   done
   return 0
 }
@@ -144,40 +159,40 @@ check_curl() {
 
 check_compiler() {
   case "$OS" in
-    debian)
-      if have_cmd cc && have_cmd make; then
-        ok "C toolchain (cc, make)"
-      else
-        bad "C toolchain — need build-essential (cc + make)"
-        mark_missing build-essential
-      fi
-      ;;
-    macos)
-      if xcode-select -p >/dev/null 2>&1 && have_cmd cc; then
-        ok "Xcode Command Line Tools"
-      else
-        bad "Xcode Command Line Tools — not installed"
-        mark_missing xcode-clt
-      fi
-      ;;
-    windows)
-      if have_cmd cl || have_cmd clang || [[ -n "${VSINSTALLDIR:-}" ]]; then
-        ok "C toolchain"
-      elif have_cmd vswhere && vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath >/dev/null 2>&1; then
-        ok "Visual Studio C++ tools"
-      else
-        bad "C toolchain — install Visual Studio Build Tools (Desktop development with C++)"
-        mark_missing vs-build-tools
-      fi
-      ;;
-    *)
-      if have_cmd cc && have_cmd make; then
-        ok "C toolchain (cc, make)"
-      else
-        bad "C toolchain — need a C compiler and make"
-        mark_missing compiler
-      fi
-      ;;
+  debian)
+    if have_cmd cc && have_cmd make; then
+      ok "C toolchain (cc, make)"
+    else
+      bad "C toolchain — need build-essential (cc + make)"
+      mark_missing build-essential
+    fi
+    ;;
+  macos)
+    if xcode-select -p >/dev/null 2>&1 && have_cmd cc; then
+      ok "Xcode Command Line Tools"
+    else
+      bad "Xcode Command Line Tools — not installed"
+      mark_missing xcode-clt
+    fi
+    ;;
+  windows)
+    if have_cmd cl || have_cmd clang || [[ -n "${VSINSTALLDIR:-}" ]]; then
+      ok "C toolchain"
+    elif have_cmd vswhere && vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath >/dev/null 2>&1; then
+      ok "Visual Studio C++ tools"
+    else
+      bad "C toolchain — install Visual Studio Build Tools (Desktop development with C++)"
+      mark_missing vs-build-tools
+    fi
+    ;;
+  *)
+    if have_cmd cc && have_cmd make; then
+      ok "C toolchain (cc, make)"
+    else
+      bad "C toolchain — need a C compiler and make"
+      mark_missing compiler
+    fi
+    ;;
   esac
 }
 
@@ -221,10 +236,10 @@ install_debian() {
   local item
   for item in "${MISSING[@]+"${MISSING[@]}"}"; do
     case "$item" in
-      git) pkgs+=(git) ;;
-      python3) pkgs+=(python3) ;;
-      curl) pkgs+=(curl ca-certificates) ;;
-      build-essential) pkgs+=(build-essential pkg-config) ;;
+    git) pkgs+=(git) ;;
+    python3) pkgs+=(python3) ;;
+    curl) pkgs+=(curl ca-certificates) ;;
+    build-essential) pkgs+=(build-essential pkg-config) ;;
     esac
   done
   if [[ "$OPTIONAL" -eq 1 ]]; then
@@ -246,20 +261,20 @@ install_macos_system() {
   local item
   for item in "${MISSING[@]+"${MISSING[@]}"}"; do
     case "$item" in
-      xcode-clt)
-        note "opening Xcode Command Line Tools installer (GUI prompt)"
-        xcode-select --install || true
-        echo "Finish the CLT installer window, then re-run: ./prereqs.sh --install"
-        ;;
-      git|python3|curl)
-        if have_cmd brew; then
-          if confirm "Install $item with Homebrew?"; then
-            brew install "$item"
-          fi
-        else
-          note "$item is normally provided by Xcode CLT. Install CLT, or install Homebrew."
+    xcode-clt)
+      note "opening Xcode Command Line Tools installer (GUI prompt)"
+      xcode-select --install || true
+      echo "Finish the CLT installer window, then re-run: ./prereqs.sh --install"
+      ;;
+    git | python3 | curl)
+      if have_cmd brew; then
+        if confirm "Install $item with Homebrew?"; then
+          brew install "$item"
         fi
-        ;;
+      else
+        note "$item is normally provided by Xcode CLT. Install CLT, or install Homebrew."
+      fi
+      ;;
     esac
   done
 }
@@ -272,26 +287,26 @@ install_windows_system() {
   local item
   for item in "${MISSING[@]+"${MISSING[@]}"}"; do
     case "$item" in
-      git)
-        note "winget install Git.Git"
-        winget install --id Git.Git -e --source winget --accept-package-agreements --accept-source-agreements
-        ;;
-      python3)
-        note "winget install Python.Python.3.12"
-        winget install --id Python.Python.3.12 -e --source winget --accept-package-agreements --accept-source-agreements
-        ;;
-      vs-build-tools)
-        note "winget install Visual Studio 2022 Build Tools (large)"
-        if confirm "Install Visual Studio Build Tools with C++ workload?"; then
-          winget install --id Microsoft.VisualStudio.2022.BuildTools -e --source winget \
-            --accept-package-agreements --accept-source-agreements \
-            --override "--wait --quiet --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
-        fi
-        ;;
-      node|npm)
-        note "winget install OpenJS.NodeJS.LTS"
-        winget install --id OpenJS.NodeJS.LTS -e --source winget --accept-package-agreements --accept-source-agreements
-        ;;
+    git)
+      note "winget install Git.Git"
+      winget install --id Git.Git -e --source winget --accept-package-agreements --accept-source-agreements
+      ;;
+    python3)
+      note "winget install Python.Python.3.12"
+      winget install --id Python.Python.3.12 -e --source winget --accept-package-agreements --accept-source-agreements
+      ;;
+    vs-build-tools)
+      note "winget install Visual Studio 2022 Build Tools (large)"
+      if confirm "Install Visual Studio Build Tools with C++ workload?"; then
+        winget install --id Microsoft.VisualStudio.2022.BuildTools -e --source winget \
+          --accept-package-agreements --accept-source-agreements \
+          --override "--wait --quiet --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
+      fi
+      ;;
+    node | npm)
+      note "winget install OpenJS.NodeJS.LTS"
+      winget install --id OpenJS.NodeJS.LTS -e --source winget --accept-package-agreements --accept-source-agreements
+      ;;
     esac
   done
 }
@@ -357,17 +372,17 @@ fi
 printf '\nInstalling missing prerequisites...\n'
 
 case "$OS" in
-  debian) install_debian ;;
-  macos) install_macos_system ;;
-  windows) install_windows_system ;;
-  linux)
-    echo "error: this Linux distro has no apt-get. Install git, python3, curl, make, a C compiler, and Node ${MIN_NODE}+ yourself, then re-run." >&2
-    exit 1
-    ;;
-  *)
-    echo "error: unsupported OS ($uname_s)" >&2
-    exit 1
-    ;;
+debian) install_debian ;;
+macos) install_macos_system ;;
+windows) install_windows_system ;;
+linux)
+  echo "error: this Linux distro has no apt-get. Install git, python3, curl, make, a C compiler, and Node ${MIN_NODE}+ yourself, then re-run." >&2
+  exit 1
+  ;;
+*)
+  echo "error: unsupported OS ($uname_s)" >&2
+  exit 1
+  ;;
 esac
 
 # Re-check node after system packages / winget

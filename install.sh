@@ -39,14 +39,23 @@ EOF
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --dry-run) DRY_RUN=1; shift ;;
-    --force) FORCE=1; shift ;;
-    -h|--help) usage; exit 0 ;;
-    *)
-      echo "error: unknown option: $1" >&2
-      usage >&2
-      exit 1
-      ;;
+  --dry-run)
+    DRY_RUN=1
+    shift
+    ;;
+  --force)
+    FORCE=1
+    shift
+    ;;
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  *)
+    echo "error: unknown option: $1" >&2
+    usage >&2
+    exit 1
+    ;;
   esac
 done
 
@@ -66,6 +75,7 @@ run() {
 need_cmd() {
   if ! command -v "$1" >/dev/null 2>&1; then
     echo "error: '$1' is required but not in PATH" >&2
+    echo "       run ./prereqs.sh --install first (Windows: .\\prereqs.ps1 -Install)" >&2
     exit 1
   fi
 }
@@ -77,7 +87,16 @@ is_package_installed() {
 
 need_cmd pi
 need_cmd git
-need_cmd python3
+PYTHON_BIN=""
+if command -v python3 >/dev/null 2>&1; then
+  PYTHON_BIN="$(command -v python3)"
+elif command -v python >/dev/null 2>&1; then
+  PYTHON_BIN="$(command -v python)"
+else
+  echo "error: python3 (or python) is required but not in PATH" >&2
+  echo "       run ./prereqs.sh --install first (Windows: .\\prereqs.ps1 -Install)" >&2
+  exit 1
+fi
 
 if [[ ! -f "$PACKAGES_FILE" ]]; then
   echo "error: missing $PACKAGES_FILE" >&2
@@ -103,14 +122,14 @@ while IFS= read -r raw || [[ -n "$raw" ]]; do
   log "pi install $spec"
   run pi install "$spec"
   INSTALLED_COUNT=$((INSTALLED_COUNT + 1))
-done < "$PACKAGES_FILE"
+done <"$PACKAGES_FILE"
 
 if [[ -f "$NPM_EXTRAS" ]]; then
   log "merging npm extras into ~/.pi/agent/npm/package.json"
   if [[ "$DRY_RUN" -eq 1 ]]; then
     note "dry-run: would merge $NPM_EXTRAS"
   else
-    python3 - "$NPM_EXTRAS" "$PI_NPM/package.json" <<'PY'
+    "$PYTHON_BIN" - "$NPM_EXTRAS" "$PI_NPM/package.json" <<'PY'
 import json, pathlib, sys
 
 extras_path = pathlib.Path(sys.argv[1])
@@ -127,7 +146,7 @@ pkg_path.write_text(json.dumps(data, indent=2) + "\n")
 PY
     mkdir -p "$PI_NPM"
     if [[ ! -f "$PI_NPM/.npmrc" ]]; then
-      printf 'legacy-peer-deps=true\n' > "$PI_NPM/.npmrc"
+      printf 'legacy-peer-deps=true\n' >"$PI_NPM/.npmrc"
     fi
   fi
 fi
@@ -148,8 +167,7 @@ log "installing herdr-multi-agent-orch skill"
 ORCH_SRC="${ROOT}/skills/herdr-multi-agent-orch"
 ORCH_DEST="${AGENTS_SKILLS}/herdr-multi-agent-orch"
 run mkdir -p "${ORCH_DEST}/references"
-run cp "${ORCH_SRC}/SKILL.md" "${ORCH_DEST}/SKILL.md"
-run cp "${ORCH_SRC}/references/"*.md "${ORCH_DEST}/references/"
+run cp -R "${ORCH_SRC}/." "${ORCH_DEST}/"
 
 log "linking skills into ~/.pi/agent/skills"
 run mkdir -p "$PI_SKILLS"
@@ -166,11 +184,11 @@ run mkdir -p "${PI_EXT}/muse-voice"
 run cp "${ROOT}/extensions/herdr-agent-state.ts" "${PI_EXT}/"
 run cp "${ROOT}/extensions/moshi-hooks.ts" "${PI_EXT}/"
 run cp "${ROOT}/extensions/pi-footer.json" "${PI_EXT}/"
-run cp "${ROOT}/extensions/muse-voice/"* "${PI_EXT}/muse-voice/"
+run cp -R "${ROOT}/extensions/muse-voice/." "${PI_EXT}/muse-voice/"
 
 log "copying themes"
 run mkdir -p "$PI_THEMES"
-run cp "${ROOT}/themes/"*.json "${PI_THEMES}/"
+run cp -R "${ROOT}/themes/." "${PI_THEMES}/"
 
 log "done"
 note "packages installed this run: ${INSTALLED_COUNT}"

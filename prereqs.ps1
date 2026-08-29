@@ -21,9 +21,13 @@ function Test-Cmd($name) {
 
 function Get-NodeVersion {
     if (-not (Test-Cmd "node")) { return $null }
-    $raw = (node -v 2>$null)
-    if (-not $raw) { return $null }
-    return [version]($raw.TrimStart("v").Split("-")[0])
+    try {
+        $raw = (node -v 2>$null)
+        if (-not $raw) { return $null }
+        return [version]($raw.TrimStart("v").Split("-")[0])
+    } catch {
+        return $null
+    }
 }
 
 function Confirm-Step($prompt) {
@@ -43,6 +47,9 @@ function Install-Winget($id, $override) {
     )
     if ($override) { $args += @("--override", $override) }
     & winget @args
+    if ($LASTEXITCODE -ne 0) {
+        Write-Note "winget returned $LASTEXITCODE for $id (ok if already installed)"
+    }
 }
 
 $doInstall = [bool]$Install
@@ -133,7 +140,7 @@ foreach ($item in $missing) {
         "git" { Install-Winget "Git.Git" $null }
         "python" { Install-Winget "Python.Python.3.12" $null }
         "node" { Install-Winget "OpenJS.NodeJS.LTS" $null }
-        "npm" { if ($missing -notcontains "node") { Install-Winget "OpenJS.NodeJS.LTS" $null } }
+        "npm" { if (-not $missing.Contains("node")) { Install-Winget "OpenJS.NodeJS.LTS" $null } }
         "vs-build-tools" {
             if (Confirm-Step "Install Visual Studio Build Tools with C++ workload? (large download)") {
                 Install-Winget "Microsoft.VisualStudio.2022.BuildTools" "--wait --quiet --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
