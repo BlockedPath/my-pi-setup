@@ -1,0 +1,157 @@
+{
+  "version": 1,
+  "enabled": true,
+  "preset": "default",
+  "lines": [
+    [
+      {
+        "id": "model-provider-mrokvmw8-l6v6a3",
+        "type": "model-provider",
+        "enabled": true,
+        "options": {
+          "raw": false,
+          "icon": "",
+          "fg": "cyan",
+          "bg": "default",
+          "bold": false
+        }
+      },
+      {
+        "id": "cwd-mroxqena-fbkksp",
+        "type": "cwd",
+        "enabled": true,
+        "options": {
+          "raw": false,
+          "icon": "",
+          "fg": "green",
+          "bg": "default",
+          "bold": false,
+          "cwdDisplayStyle": "default",
+          "segments": 2
+        }
+      },
+      {
+        "id": "thinking-level-mrokvmw8-bn5ojn",
+        "type": "thinking-level",
+        "enabled": true,
+        "options": {
+          "raw": false,
+          "hideWhenEmpty": false,
+          "icon": "",
+          "text": "",
+          "fg": "cyan",
+          "bg": "default",
+          "bold": false
+        }
+      },
+      {
+        "id": "text-verbosity-mrokvmw8-64bo8p",
+        "type": "text-verbosity",
+        "enabled": false,
+        "options": {
+          "raw": false,
+          "hideWhenEmpty": false,
+          "icon": "",
+          "text": "",
+          "fg": "cyan",
+          "bg": "default",
+          "bold": false
+        }
+      },
+      {
+        "id": "context-length-mrokvmw8-7ggb2c",
+        "type": "context-length",
+        "enabled": true,
+        "options": {
+          "raw": false,
+          "hideWhenZero": false,
+          "icon": "",
+          "fg": "brightBlack",
+          "bg": "default",
+          "bold": false,
+          "tokenFormatStyle": "default",
+          "contextConditionalColors": false,
+          "contextWarningPercent": 70,
+          "contextDangerPercent": 90,
+          "warningFg": "yellow",
+          "warningBg": "default",
+          "dangerFg": "red",
+          "dangerBg": "default"
+        }
+      },
+      {
+        "id": "git-branch-mrokvmw8-8rn4t5",
+        "type": "git-branch",
+        "enabled": true,
+        "options": {
+          "raw": false,
+          "hideWhenEmpty": false,
+          "icon": "",
+          "text": "",
+          "fg": "white",
+          "bg": "default",
+          "bold": false,
+          "gitBranchDisplayStyle": "default",
+          "surroundLeft": "",
+          "surroundRight": ""
+        }
+      },
+      {
+        "id": "git-diff-mrokvmw8-76vg1o",
+        "type": "git-diff",
+        "enabled": false,
+        "options": {
+          "raw": false,
+          "hideWhenEmpty": false,
+          "icon": "",
+          "text": "",
+          "fg": "yellow",
+          "bg": "default",
+          "bold": false,
+          "gitDiffMode": "compact"
+        }
+      },
+      {
+        "id": "cost-mrokvmw8-wcfbgh",
+        "type": "cost",
+        "enabled": false,
+        "options": {
+          "raw": false,
+          "icon": "",
+          "fg": "green",
+          "bg": "default",
+          "bold": false,
+          "costFormatStyle": "default",
+          "showSubscription": false
+        }
+      },
+      {
+        "id": "total-time-mrokvmw8-bvd7zu",
+        "type": "total-time",
+        "enabled": true,
+        "options": {
+          "raw": false,
+          "icon": "",
+          "fg": "yellow",
+          "bg": "default",
+          "bold": false
+        }
+      }
+    ]
+  ],
+  "separator": "dot",
+  "separatorFg": "default",
+  "separatorBg": "default",
+  "iconMode": "emoji",
+  "minimalist": false,
+  "terminal": {
+    "widthMode": "full",
+    "colorLevel": "ansi256"
+  },
+  "extensionStatusRow": {
+    "hiddenKeys": [],
+    "knownKeys": [
+      "pi-lens-lsp"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+# Pi packages from ~/.pi/agent/settings.json (pi list).
+# One `npm:` spec per line. Comments and blank lines are ignored.
+npm:@narumitw/pi-chrome-devtools
+npm:pi-theme-tokyo-night-storm-improved
+npm:@ogulcancelik/pi-herdr
+npm:@juicesharp/rpiv-ask-user-question
+npm:@juicesharp/rpiv-todo
+npm:pi-lens
+npm:@plannotator/pi-extension
+npm:pi-tps-meter
+npm:pi-subagents
+npm:pi-startup-header
+npm:@narumitw/pi-statusline
+npm:@gotgenes/pi-anthropic-auth
+npm:pi-extension-cloudflare-workers-ai
+npm:pi-web-access
+npm:pi-xai-oauth
+npm:pi-cursor-sdk
+npm:@llblab/pi-telegram
+npm:@juicesharp/rpiv-voice
+npm:pi-meta-oauth
+npm:@narumitw/pi-goal

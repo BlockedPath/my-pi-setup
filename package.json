@@ -1,0 +1,9 @@
+{
+  "name": "my-pi-setup",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal Pi bootstrap for moving machines. Run ./install.sh to restore packages, skills, extensions, and themes.",
+  "scripts": {
+    "setup": "./install.sh"
+  }
+}

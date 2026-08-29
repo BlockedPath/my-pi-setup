@@ -1,0 +1,86 @@
+{
+  "name": "my-pi-setup",
+  "capturedAt": "2026-08-29",
+  "sourceHost": "this-machine",
+  "piVersion": "0.84.4",
+  "packages": [
+    "npm:@narumitw/pi-chrome-devtools",
+    "npm:pi-theme-tokyo-night-storm-improved",
+    "npm:@ogulcancelik/pi-herdr",
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:@juicesharp/rpiv-todo",
+    "npm:pi-lens",
+    "npm:@plannotator/pi-extension",
+    "npm:pi-tps-meter",
+    "npm:pi-subagents",
+    "npm:pi-startup-header",
+    "npm:@narumitw/pi-statusline",
+    "npm:@gotgenes/pi-anthropic-auth",
+    "npm:pi-extension-cloudflare-workers-ai",
+    "npm:pi-web-access",
+    "npm:pi-xai-oauth",
+    "npm:pi-cursor-sdk",
+    "npm:@llblab/pi-telegram",
+    "npm:@juicesharp/rpiv-voice",
+    "npm:pi-meta-oauth",
+    "npm:@narumitw/pi-goal"
+  ],
+  "pinnedVersionsAtCapture": {
+    "@gotgenes/pi-anthropic-auth": "^2.0.6",
+    "@juicesharp/rpiv-ask-user-question": "^2.7.1",
+    "@juicesharp/rpiv-todo": "^2.7.1",
+    "@juicesharp/rpiv-voice": "^2.7.1",
+    "@llblab/pi-telegram": "^0.39.5",
+    "@narumitw/pi-chrome-devtools": "^0.53.1",
+    "@narumitw/pi-goal": "^0.54.3",
+    "@narumitw/pi-statusline": "^0.49.15",
+    "@ogulcancelik/pi-herdr": "^0.4.0",
+    "@plannotator/pi-extension": "^0.27.9",
+    "pi-cursor-sdk": "^0.3.6",
+    "pi-extension-cloudflare-workers-ai": "^0.1.3",
+    "pi-lens": "^4.1.3",
+    "pi-meta-oauth": "^0.4.4",
+    "pi-startup-header": "^0.2.0",
+    "pi-subagents": "^0.59.0",
+    "pi-theme-tokyo-night-storm-improved": "^1.0.0",
+    "pi-tps-meter": "^3.0.4",
+    "pi-web-access": "^0.27.0",
+    "pi-xai-oauth": "^1.5.2"
+  },
+  "skills": {
+    "herdr": {
+      "source": "git:https://github.com/ogulcancelik/herdr.git",
+      "installPath": "~/.agents/skills/herdr"
+    },
+    "herdr-multi-agent-orch": {
+      "source": "vendored",
+      "installPath": "~/.agents/skills/herdr-multi-agent-orch"
+    }
+  },
+  "extensions": [
+    "extensions/herdr-agent-state.ts",
+    "extensions/moshi-hooks.ts",
+    "extensions/pi-footer.json",
+    "extensions/muse-voice/"
+  ],
+  "themes": [
+    "themes/dark-bright.json",
+    "themes/gruvbox-dark.json",
+    "themes/nord.json",
+    "themes/paper-light.json",
+    "themes/tokyo-night.json"
+  ],
+  "excluded": [
+    "settings.json (theme, models, subagent overrides)",
+    "auth.json and other secrets",
+    "custom subagents in ~/.pi/agent/agents",
+    "issue-validity-audit",
+    "linear-tickets",
+    "microsoft-foundry",
+    "moshi-best-practices",
+    "web-perf",
+    "terminal-browser",
+    "disabled extensions (*.disabled)",
+    "voice-spike.ts prototype symlink"
+  ]
+}
